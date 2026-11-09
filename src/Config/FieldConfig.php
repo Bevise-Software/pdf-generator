@@ -7,6 +7,7 @@ namespace PdfGenerator\Config;
 use InvalidArgumentException;
 use PdfGenerator\Support\Alignment;
 use PdfGenerator\Support\Color;
+use PdfGenerator\Support\TextTemplate;
 
 /** Immutable, pre-validated definition of a single text field. */
 final class FieldConfig
@@ -56,24 +57,15 @@ final class FieldConfig
     /**
      * Resolves the value template against a CSV record:
      * '{imie} {nazwisko}' + ['imie' => 'Jan', 'nazwisko' => 'Kowalski'] => 'Jan Kowalski'.
-     * Collapses repeated whitespace left behind by empty columns.
      */
     public function resolveValue(array $record): string
     {
-        $text = preg_replace_callback(
-            '/\{([a-zA-Z0-9_]+)\}/',
-            static fn(array $match) => trim((string) ($record[$match[1]] ?? '')),
-            $this->value
-        );
-
-        return trim(preg_replace('/\s+/u', ' ', (string) $text) ?? '');
+        return TextTemplate::resolve($this->value, $record);
     }
 
     /** @return string[] CSV column names referenced by the value template */
     public function referencedColumns(): array
     {
-        preg_match_all('/\{([a-zA-Z0-9_]+)\}/', $this->value, $matches);
-
-        return $matches[1];
+        return TextTemplate::referencedColumns($this->value);
     }
 }

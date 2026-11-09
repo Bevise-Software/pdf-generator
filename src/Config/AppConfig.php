@@ -13,6 +13,7 @@ final class AppConfig
     public function __construct(
         public readonly string $templatePath,
         public readonly string $csvPath,
+        public readonly string $filenameTemplate,
         public readonly string $outputDir,
         public readonly string $reportPath,
         public readonly string $gridOutputPath,
@@ -25,7 +26,7 @@ final class AppConfig
 
     public static function fromArray(array $raw): self
     {
-        foreach (['template', 'csv', 'output_dir', 'report', 'grid_output', 'font_cache', 'log', 'fields'] as $required) {
+        foreach (['template', 'csv', 'filename', 'output_dir', 'report', 'grid_output', 'font_cache', 'log', 'fields'] as $required) {
             if (!array_key_exists($required, $raw)) {
                 throw new InvalidArgumentException("Missing config key \"$required\".");
             }
@@ -39,6 +40,7 @@ final class AppConfig
         return new self(
             templatePath: (string) $raw['template'],
             csvPath: (string) $raw['csv'],
+            filenameTemplate: (string) $raw['filename'],
             outputDir: rtrim((string) $raw['output_dir'], '/\\'),
             reportPath: (string) $raw['report'],
             gridOutputPath: (string) $raw['grid_output'],
@@ -54,6 +56,7 @@ final class AppConfig
         return new self(
             $this->templatePath,
             $this->csvPath,
+            $this->filenameTemplate,
             $this->outputDir,
             $this->reportPath,
             $this->gridOutputPath,

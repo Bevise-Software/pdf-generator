@@ -5,8 +5,19 @@
  * measured from the top-left corner of the page.
  */
 return [
-    'template'    => __DIR__ . '/wzor.pdf',
+    'template'    => __DIR__ . '/Certyfikat_diagnozy_npwz.pdf',
     'csv'         => __DIR__ . '/odbiorcy.csv',
+
+    /*
+     * OUTPUT FILENAME template. {kolumna} placeholders use CSV values,
+     * exactly like in field 'value' templates. Must end with .pdf.
+     * Polish diacritics are transliterated (ń -> n) and unsafe characters
+     * removed automatically, so names are always filesystem/e-mail safe.
+     * Every column referenced here becomes a required CSV column.
+     * Examples: '{imie}_{nazwisko}_{numer}.pdf', 'certyfikat_{numer}.pdf', '{plik}'
+     */
+    'filename'    => 'Certyfikat_diagnozy_NPWZ-{imie}_{nazwisko}.pdf',
+
     'output_dir'  => __DIR__ . '/pdf',
     'report'      => __DIR__ . '/raport_generowania.csv',
     'grid_output' => __DIR__ . '/siatka_kalibracyjna.pdf',
@@ -38,9 +49,9 @@ return [
         'full_name' => [
             'value'    => '{imie} {nazwisko}',
             'page'     => 1,
-            'x'        => 20.0,
-            'y'        => 120.0,
-            'width'    => 170.0,
+            'x'        => 150.0,
+            'y'        => 170.0,
+            'width'    => 300.0,
             'align'    => 'center',
             'font'     => __DIR__ . '/fonts/DejaVuSans.ttf',
             'size'     => 28.0,
@@ -50,8 +61,8 @@ return [
         'number' => [
             'value'    => '{numer}',
             'page'     => 1,
-            'x'        => 20.0,
-            'y'        => 150.0,
+            'x'        => 150.0,
+            'y'        => 85.0,
             'width'    => 170.0,
             'align'    => 'center',
             'font'     => __DIR__ . '/fonts/DejaVuSans.ttf',

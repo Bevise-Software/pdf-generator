@@ -6,8 +6,11 @@ namespace PdfGenerator\Csv;
 
 final class RecipientValidator
 {
-    /** Columns always required regardless of field templates (mailer + output filename). */
-    public const BASE_COLUMNS = ['email', 'plik'];
+    /** Columns always required regardless of templates (needed by the mailer). */
+    public const BASE_COLUMNS = ['email'];
+
+    /** Key under which the resolved output filename is stored in each record. */
+    public const FILENAME_KEY = '_filename';
 
     private const FILENAME_PATTERN = '/^[A-Za-z0-9._-]+$/';
 
@@ -44,15 +47,18 @@ final class RecipientValidator
                 }
             }
 
-            $filename = $record['plik'] ?? '';
-            if ($filename === '') {
+            $filename = (string) ($record[self::FILENAME_KEY] ?? '');
+            if ($filename === '' || preg_replace('/\.pdf$/i', '', $filename) === '') {
+                $errors[] = "Row $row: output filename resolves to an empty name "
+                          . "(check the 'filename' template in config.php).";
                 continue;
             }
             if (!preg_match(self::FILENAME_PATTERN, $filename)) {
                 $errors[] = "Row $row: filename \"$filename\" contains forbidden characters "
                           . '(allowed: A-Z a-z 0-9 . _ -).';
             } elseif (!preg_match('/\.pdf$/i', $filename)) {
-                $errors[] = "Row $row: filename \"$filename\" must end with .pdf.";
+                $errors[] = "Row $row: filename \"$filename\" must end with .pdf "
+                          . "(check the 'filename' template in config.php).";
             }
 
             // Case-insensitive duplicate check (Windows filesystems)

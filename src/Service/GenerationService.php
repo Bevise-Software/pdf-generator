@@ -15,6 +15,7 @@ use PdfGenerator\Pdf\GridRenderer;
 use PdfGenerator\Pdf\PdfFactory;
 use PdfGenerator\Pdf\TextFitter;
 use PdfGenerator\Report\ReportWriter;
+use PdfGenerator\Support\FilenameResolver;
 use RuntimeException;
 use Throwable;
 
@@ -72,6 +73,13 @@ final class GenerationService
             $generator->assertTemplateSupported();
 
             [$headers, $records] = (new RecipientReader())->read($config->csvPath);
+
+            // Resolve output filenames up front so the validator can check them
+            $resolver = new FilenameResolver($config->filenameTemplate);
+            foreach ($records as $i => $record) {
+                $records[$i][RecipientValidator::FILENAME_KEY] = $resolver->resolve($record);
+            }
+
             $validationErrors = (new RecipientValidator($this->requiredColumns()))->validate($headers, $records);
             if ($validationErrors !== []) {
                 foreach ($validationErrors as $error) {
@@ -95,12 +103,13 @@ final class GenerationService
         $stats = ['generated' => 0, 'skipped' => 0, 'warnings' => 0, 'errors' => 0];
 
         foreach ($records as $record) {
-            $outputPath = $config->outputDir . DIRECTORY_SEPARATOR . $record['plik'];
+            $filename = (string) $record[RecipientValidator::FILENAME_KEY];
+            $outputPath = $config->outputDir . DIRECTORY_SEPARATOR . $filename;
 
             if (is_file($outputPath) && !$config->overwrite) {
                 $stats['skipped']++;
-                $reportRows[] = [$record['plik'], GenerationResult::STATUS_SKIPPED, 'file already exists (overwrite = false)'];
-                $this->logger->info("Skipped {$record['plik']}: file already exists");
+                $reportRows[] = [$filename, GenerationResult::STATUS_SKIPPED, 'file already exists (overwrite = false)'];
+                $this->logger->info("Skipped $filename: file already exists");
                 continue;
             }
 
@@ -109,19 +118,19 @@ final class GenerationService
                 $stats['generated']++;
                 if ($warnings !== []) {
                     $stats['warnings']++;
-                    $reportRows[] = [$record['plik'], GenerationResult::STATUS_WARNING, implode(' | ', $warnings)];
-                    $this->logger->warning("Generated {$record['plik']} with warnings: " . implode(' | ', $warnings));
+                    $reportRows[] = [$filename, GenerationResult::STATUS_WARNING, implode(' | ', $warnings)];
+                    $this->logger->warning("Generated $filename with warnings: " . implode(' | ', $warnings));
                 } else {
-                    $reportRows[] = [$record['plik'], GenerationResult::STATUS_GENERATED, ''];
-                    $this->logger->info("Generated {$record['plik']}");
+                    $reportRows[] = [$filename, GenerationResult::STATUS_GENERATED, ''];
+                    $this->logger->info("Generated $filename");
                 }
             } catch (UnsupportedPdfException $e) {
                 $this->logger->error('Generation aborted: unsupported PDF compression');
                 throw $e; // template-level problem: abort the whole run
             } catch (Throwable $e) {
                 $stats['errors']++;
-                $reportRows[] = [$record['plik'], GenerationResult::STATUS_ERROR, $e->getMessage()];
-                $this->logger->error("Failed to generate {$record['plik']}: " . $e->getMessage());
+                $reportRows[] = [$filename, GenerationResult::STATUS_ERROR, $e->getMessage()];
+                $this->logger->error("Failed to generate $filename: " . $e->getMessage());
             }
         }
 
@@ -139,14 +148,17 @@ final class GenerationService
     }
 
     /**
-     * Required CSV columns = base columns (email, plik) + every column
-     * referenced by field value templates in config.php.
+     * Required CSV columns = base columns (email) + every column referenced
+     * by field value templates and the filename template in config.php.
      *
      * @return string[]
      */
     private function requiredColumns(): array
     {
-        $columns = RecipientValidator::BASE_COLUMNS;
+        $columns = array_merge(
+            RecipientValidator::BASE_COLUMNS,
+            (new FilenameResolver($this->config->filenameTemplate))->referencedColumns()
+        );
         foreach ($this->config->fields as $field) {
             $columns = array_merge($columns, $field->referencedColumns());
         }
@@ -178,8 +190,9 @@ final class GenerationService
             'imie'     => 'Aleksandra ąćęłńóśźż',
             'nazwisko' => 'Konstantynopolitańczykiewicz-Wiśniewska ĄĆĘŁŃÓŚŹŻ',
             'numer'    => '999999',
-            'plik'     => self::PREVIEW_TEST_FILE,
             '_row'     => 0,
+            // Fixed name so the stress-test file is easy to find and never collides
+            RecipientValidator::FILENAME_KEY => self::PREVIEW_TEST_FILE,
         ];
         // Fill any extra template-referenced column with a diacritics sample
         foreach ($this->requiredColumns() as $column) {
