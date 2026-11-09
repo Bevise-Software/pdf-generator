@@ -14,6 +14,7 @@ final class FieldConfig
     /** @param array{0:int,1:int,2:int} $color */
     public function __construct(
         public readonly string $key,
+        public readonly string $value,     // template, e.g. '{imie} {nazwisko}'
         public readonly int $page,
         public readonly float $x,
         public readonly float $y,
@@ -28,7 +29,7 @@ final class FieldConfig
 
     public static function fromArray(string $key, array $raw): self
     {
-        foreach (['page', 'x', 'y', 'width', 'align', 'font', 'size', 'min_size', 'color'] as $required) {
+        foreach (['value', 'page', 'x', 'y', 'width', 'align', 'font', 'size', 'min_size', 'color'] as $required) {
             if (!array_key_exists($required, $raw)) {
                 throw new InvalidArgumentException("Field \"$key\": missing config key \"$required\".");
             }
@@ -39,6 +40,7 @@ final class FieldConfig
 
         return new self(
             key: $key,
+            value: (string) $raw['value'],
             page: (int) $raw['page'],
             x: (float) $raw['x'],
             y: (float) $raw['y'],
@@ -49,5 +51,29 @@ final class FieldConfig
             minSize: (float) $raw['min_size'],
             color: Color::parse($raw['color']),
         );
+    }
+
+    /**
+     * Resolves the value template against a CSV record:
+     * '{imie} {nazwisko}' + ['imie' => 'Jan', 'nazwisko' => 'Kowalski'] => 'Jan Kowalski'.
+     * Collapses repeated whitespace left behind by empty columns.
+     */
+    public function resolveValue(array $record): string
+    {
+        $text = preg_replace_callback(
+            '/\{([a-zA-Z0-9_]+)\}/',
+            static fn(array $match) => trim((string) ($record[$match[1]] ?? '')),
+            $this->value
+        );
+
+        return trim(preg_replace('/\s+/u', ' ', (string) $text) ?? '');
+    }
+
+    /** @return string[] CSV column names referenced by the value template */
+    public function referencedColumns(): array
+    {
+        preg_match_all('/\{([a-zA-Z0-9_]+)\}/', $this->value, $matches);
+
+        return $matches[1];
     }
 }

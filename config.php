@@ -16,19 +16,39 @@ return [
     // Overwrite existing files in output_dir (--preview always overwrites)
     'overwrite'   => false,
 
+    /*
+     * FIELDS — every text stamped onto the template.
+     *
+     * TO ADD A NEW FIELD: add one entry below. Nothing else needs changing.
+     *
+     *   'value'    - text template; {kolumna} is replaced with the CSV column
+     *                value, e.g. '{imie} {nazwisko}', '{numer}', 'Nr: {numer}'.
+     *                Every column referenced here automatically becomes a
+     *                required CSV column (validated before generation).
+     *   'page'     - template page the text is stamped on
+     *   'x', 'y'   - top-left corner of the text box in mm (calibrate with --grid)
+     *   'width'    - text box width in mm (auto font shrinking fits text into it)
+     *   'align'    - left / center / right
+     *   'font'     - path to a TTF file (UTF-8 / Polish characters supported)
+     *   'size'     - starting font size in pt
+     *   'min_size' - minimum font size in pt (below this a warning is reported)
+     *   'color'    - '#RRGGBB' or [R, G, B]
+     */
     'fields' => [
         'full_name' => [
+            'value'    => '{imie} {nazwisko}',
             'page'     => 1,
-            'x'        => 20.0,      // calibrate with --grid
-            'y'        => 120.0,     // calibrate with --grid
+            'x'        => 20.0,
+            'y'        => 120.0,
             'width'    => 170.0,
-            'align'    => 'center',  // left / center / right
+            'align'    => 'center',
             'font'     => __DIR__ . '/fonts/DejaVuSans.ttf',
-            'size'     => 28.0,      // starting size in pt
-            'min_size' => 14.0,      // minimum size in pt
-            'color'    => '#1A1A1A', // '#RRGGBB' or [R, G, B]
+            'size'     => 28.0,
+            'min_size' => 14.0,
+            'color'    => '#1A1A1A',
         ],
         'number' => [
+            'value'    => '{numer}',
             'page'     => 1,
             'x'        => 20.0,
             'y'        => 150.0,

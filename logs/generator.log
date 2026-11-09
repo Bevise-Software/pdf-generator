@@ -10,3 +10,31 @@
 [2026-11-09 10:55:31] [web] [INFO] Generated dokument_003.pdf
 [2026-11-09 10:55:31] [web] [WARNING] Generated _test_preview.pdf with warnings: field "full_name": text "Aleksandra ąćęłńóśźż Konstantynopolitańczykiewicz-Wiśniewska ĄĆĘŁŃÓŚŹŻ" does not fit in 170 mm even at the minimum size of 14 pt
 [2026-11-09 10:55:31] [web] [INFO] Generation finished: 4 generated, 0 skipped, 1 with warnings, 0 errors (report: C:\Users\pxpac\Local Sites\nowp\app\public\pdf-generator/raport_generowania.csv)
+[2026-11-09 10:57:08] [web] [INFO] Rendering calibration grid
+[2026-11-09 10:57:08] [web] [INFO] Calibration grid saved to C:\Users\pxpac\Local Sites\nowp\app\public\pdf-generator/siatka_kalibracyjna.pdf
+[2026-11-09 10:57:12] [web] [INFO] Rendering calibration grid
+[2026-11-09 10:57:12] [web] [INFO] Calibration grid saved to C:\Users\pxpac\Local Sites\nowp\app\public\pdf-generator/siatka_kalibracyjna.pdf
+[2026-11-09 11:03:37] [web] [INFO] Generation started (mode: full, overwrite: no)
+[2026-11-09 11:03:37] [web] [INFO] Generated dokument_001.pdf
+[2026-11-09 11:03:37] [web] [INFO] Generated dokument_002.pdf
+[2026-11-09 11:03:37] [web] [INFO] Generated dokument_003.pdf
+[2026-11-09 11:03:37] [web] [INFO] Generation finished: 3 generated, 0 skipped, 0 with warnings, 0 errors (report: C:\Users\pxpac\Local Sites\nowp\app\public\pdf-generator/raport_generowania.csv)
+[2026-11-09 11:10:28] [cli] [INFO] Generation started (mode: preview, overwrite: yes)
+[2026-11-09 11:10:28] [cli] [INFO] Generated dokument_001.pdf
+[2026-11-09 11:10:28] [cli] [INFO] Generated dokument_002.pdf
+[2026-11-09 11:10:28] [cli] [INFO] Generated dokument_003.pdf
+[2026-11-09 11:10:28] [cli] [WARNING] Generated _test_preview.pdf with warnings: field "full_name": text "Aleksandra ąćęłńóśźż Konstantynopolitańczykiewicz-Wiśniewska ĄĆĘŁŃÓŚŹŻ" does not fit in 170 mm even at the minimum size of 14 pt
+[2026-11-09 11:10:28] [cli] [INFO] Generation finished: 4 generated, 0 skipped, 1 with warnings, 0 errors (report: C:\Users\pxpac\Local Sites\nowp\app\public\pdf-generator/raport_generowania.csv)
+[2026-11-09 11:11:34] [web] [INFO] Generation started (mode: full, overwrite: yes)
+[2026-11-09 11:11:35] [web] [INFO] Generated dokument_001.pdf
+[2026-11-09 11:11:35] [web] [INFO] Generated dokument_002.pdf
+[2026-11-09 11:11:35] [web] [INFO] Generated dokument_003.pdf
+[2026-11-09 11:11:35] [web] [INFO] Generation finished: 3 generated, 0 skipped, 0 with warnings, 0 errors (report: C:\Users\pxpac\Local Sites\nowp\app\public\pdf-generator/raport_generowania.csv)
+[2026-11-09 11:11:36] [web] [INFO] Generation started (mode: preview, overwrite: yes)
+[2026-11-09 11:11:36] [web] [INFO] Generated dokument_001.pdf
+[2026-11-09 11:11:36] [web] [INFO] Generated dokument_002.pdf
+[2026-11-09 11:11:36] [web] [INFO] Generated dokument_003.pdf
+[2026-11-09 11:11:36] [web] [WARNING] Generated _test_preview.pdf with warnings: field "full_name": text "Aleksandra ąćęłńóśźż Konstantynopolitańczykiewicz-Wiśniewska ĄĆĘŁŃÓŚŹŻ" does not fit in 170 mm even at the minimum size of 14 pt
+[2026-11-09 11:11:36] [web] [INFO] Generation finished: 4 generated, 0 skipped, 1 with warnings, 0 errors (report: C:\Users\pxpac\Local Sites\nowp\app\public\pdf-generator/raport_generowania.csv)
+[2026-11-09 11:14:24] [web] [INFO] Rendering calibration grid
+[2026-11-09 11:14:24] [web] [INFO] Calibration grid saved to C:\Users\pxpac\Local Sites\nowp\app\public\pdf-generator/siatka_kalibracyjna.pdf

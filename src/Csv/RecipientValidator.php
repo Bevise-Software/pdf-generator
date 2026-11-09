@@ -6,9 +6,15 @@ namespace PdfGenerator\Csv;
 
 final class RecipientValidator
 {
-    public const REQUIRED_COLUMNS = ['email', 'imie', 'nazwisko', 'numer', 'plik'];
+    /** Columns always required regardless of field templates (mailer + output filename). */
+    public const BASE_COLUMNS = ['email', 'plik'];
 
     private const FILENAME_PATTERN = '/^[A-Za-z0-9._-]+$/';
+
+    /** @param string[] $requiredColumns full list, including template-referenced columns */
+    public function __construct(private readonly array $requiredColumns)
+    {
+    }
 
     /**
      * Validates headers and records before any generation happens.
@@ -19,7 +25,7 @@ final class RecipientValidator
     {
         $errors = [];
 
-        $missing = array_diff(self::REQUIRED_COLUMNS, $headers);
+        $missing = array_diff($this->requiredColumns, $headers);
         if ($missing !== []) {
             // Without required columns further validation is pointless
             return ['Missing required CSV columns: ' . implode(', ', $missing)];
@@ -32,7 +38,7 @@ final class RecipientValidator
         foreach ($records as $record) {
             $row = $record['_row'];
 
-            foreach (self::REQUIRED_COLUMNS as $column) {
+            foreach ($this->requiredColumns as $column) {
                 if (($record[$column] ?? '') === '') {
                     $errors[] = "Row $row: empty value in column \"$column\".";
                 }

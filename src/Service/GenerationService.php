@@ -72,7 +72,7 @@ final class GenerationService
             $generator->assertTemplateSupported();
 
             [$headers, $records] = (new RecipientReader())->read($config->csvPath);
-            $validationErrors = (new RecipientValidator())->validate($headers, $records);
+            $validationErrors = (new RecipientValidator($this->requiredColumns()))->validate($headers, $records);
             if ($validationErrors !== []) {
                 foreach ($validationErrors as $error) {
                     $this->logger->warning('Validation: ' . $error);
@@ -138,20 +138,42 @@ final class GenerationService
         return GenerationResult::completed($reportRows, $stats);
     }
 
-    /** Maps a CSV record to field values keyed like config['fields']. */
+    /**
+     * Required CSV columns = base columns (email, plik) + every column
+     * referenced by field value templates in config.php.
+     *
+     * @return string[]
+     */
+    private function requiredColumns(): array
+    {
+        $columns = RecipientValidator::BASE_COLUMNS;
+        foreach ($this->config->fields as $field) {
+            $columns = array_merge($columns, $field->referencedColumns());
+        }
+
+        return array_values(array_unique($columns));
+    }
+
+    /**
+     * Resolves every field's value template against a CSV record.
+     * Adding a field in config.php requires no changes here.
+     */
     private function mapFieldValues(array $record): array
     {
-        return [
-            'full_name' => trim($record['imie'] . ' ' . $record['nazwisko']),
-            'number'    => $record['numer'],
-        ];
+        $values = [];
+        foreach ($this->config->fields as $key => $field) {
+            $values[$key] = $field->resolveValue($record);
+        }
+
+        return $values;
     }
 
     /** First N records plus a stress-test record with a very long name and Polish diacritics. */
     private function buildPreviewRecords(array $records): array
     {
         $records = array_slice($records, 0, self::PREVIEW_LIMIT);
-        $records[] = [
+
+        $testRecord = [
             'email'    => 'test@example.com',
             'imie'     => 'Aleksandra ąćęłńóśźż',
             'nazwisko' => 'Konstantynopolitańczykiewicz-Wiśniewska ĄĆĘŁŃÓŚŹŻ',
@@ -159,6 +181,13 @@ final class GenerationService
             'plik'     => self::PREVIEW_TEST_FILE,
             '_row'     => 0,
         ];
+        // Fill any extra template-referenced column with a diacritics sample
+        foreach ($this->requiredColumns() as $column) {
+            if (!isset($testRecord[$column])) {
+                $testRecord[$column] = 'Przykładowa wartość ąćęłńóśźż ĄĆĘŁŃÓŚŹŻ';
+            }
+        }
+        $records[] = $testRecord;
 
         return $records;
     }
