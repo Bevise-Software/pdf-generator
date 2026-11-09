@@ -1,0 +1,12 @@
+[2026-11-09 10:54:24] [cli] [INFO] Generation started (mode: preview, overwrite: yes)
+[2026-11-09 10:54:24] [cli] [INFO] Generated dokument_001.pdf
+[2026-11-09 10:54:24] [cli] [INFO] Generated dokument_002.pdf
+[2026-11-09 10:54:24] [cli] [INFO] Generated dokument_003.pdf
+[2026-11-09 10:54:24] [cli] [WARNING] Generated _test_preview.pdf with warnings: field "full_name": text "Aleksandra ąćęłńóśźż Konstantynopolitańczykiewicz-Wiśniewska ĄĆĘŁŃÓŚŹŻ" does not fit in 170 mm even at the minimum size of 14 pt
+[2026-11-09 10:54:24] [cli] [INFO] Generation finished: 4 generated, 0 skipped, 1 with warnings, 0 errors (report: C:\Users\pxpac\Local Sites\nowp\app\public\pdf-generator/raport_generowania.csv)
+[2026-11-09 10:55:31] [web] [INFO] Generation started (mode: preview, overwrite: yes)
+[2026-11-09 10:55:31] [web] [INFO] Generated dokument_001.pdf
+[2026-11-09 10:55:31] [web] [INFO] Generated dokument_002.pdf
+[2026-11-09 10:55:31] [web] [INFO] Generated dokument_003.pdf
+[2026-11-09 10:55:31] [web] [WARNING] Generated _test_preview.pdf with warnings: field "full_name": text "Aleksandra ąćęłńóśźż Konstantynopolitańczykiewicz-Wiśniewska ĄĆĘŁŃÓŚŹŻ" does not fit in 170 mm even at the minimum size of 14 pt
+[2026-11-09 10:55:31] [web] [INFO] Generation finished: 4 generated, 0 skipped, 1 with warnings, 0 errors (report: C:\Users\pxpac\Local Sites\nowp\app\public\pdf-generator/raport_generowania.csv)

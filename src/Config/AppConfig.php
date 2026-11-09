@@ -17,6 +17,7 @@ final class AppConfig
         public readonly string $reportPath,
         public readonly string $gridOutputPath,
         public readonly string $fontCacheDir,
+        public readonly string $logPath,
         public readonly bool $overwrite,
         public readonly array $fields,
     ) {
@@ -24,7 +25,7 @@ final class AppConfig
 
     public static function fromArray(array $raw): self
     {
-        foreach (['template', 'csv', 'output_dir', 'report', 'grid_output', 'font_cache', 'fields'] as $required) {
+        foreach (['template', 'csv', 'output_dir', 'report', 'grid_output', 'font_cache', 'log', 'fields'] as $required) {
             if (!array_key_exists($required, $raw)) {
                 throw new InvalidArgumentException("Missing config key \"$required\".");
             }
@@ -42,6 +43,7 @@ final class AppConfig
             reportPath: (string) $raw['report'],
             gridOutputPath: (string) $raw['grid_output'],
             fontCacheDir: rtrim((string) $raw['font_cache'], '/\\') . DIRECTORY_SEPARATOR,
+            logPath: (string) $raw['log'],
             overwrite: (bool) ($raw['overwrite'] ?? false),
             fields: $fields,
         );
@@ -56,6 +58,7 @@ final class AppConfig
             $this->reportPath,
             $this->gridOutputPath,
             $this->fontCacheDir,
+            $this->logPath,
             $overwrite,
             $this->fields,
         );

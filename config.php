@@ -11,6 +11,7 @@ return [
     'report'      => __DIR__ . '/raport_generowania.csv',
     'grid_output' => __DIR__ . '/siatka_kalibracyjna.pdf',
     'font_cache'  => __DIR__ . '/fonts/_tcpdf/',
+    'log'         => __DIR__ . '/logs/generator.log',
 
     // Overwrite existing files in output_dir (--preview always overwrites)
     'overwrite'   => false,
