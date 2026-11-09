@@ -51,3 +51,70 @@
 [2026-11-09 11:28:46] [web] [INFO] Generated Certyfikat_diagnozy_NPWZ-Anna_Nowak-Zielinska.pdf
 [2026-11-09 11:28:46] [web] [INFO] Generated Certyfikat_diagnozy_NPWZ-Piotr_Wisniewski.pdf
 [2026-11-09 11:28:46] [web] [INFO] Generation finished: 3 generated, 0 skipped, 0 with warnings, 0 errors (report: C:\Users\pxpac\Local Sites\nowp\app\public\pdf-generator/raport_generowania.csv)
+[2026-11-09 11:34:11] [web] [INFO] Generation started (mode: full, overwrite: yes)
+[2026-11-09 11:34:11] [web] [INFO] Generated Certyfikat_diagnozy_NPWZ-Jan_Kowalski.pdf
+[2026-11-09 11:34:48] [web] [INFO] Generation started (mode: full, overwrite: yes)
+[2026-11-09 11:34:48] [web] [INFO] Generated Certyfikat_diagnozy_NPWZ-Jan_Kowalski.pdf
+[2026-11-09 11:34:48] [web] [INFO] Generated Certyfikat_diagnozy_NPWZ-Anna_Nowak-Zielinska.pdf
+[2026-11-09 11:34:48] [web] [INFO] Generated Certyfikat_diagnozy_NPWZ-Piotr_Wisniewski.pdf
+[2026-11-09 11:34:48] [web] [INFO] Generation finished: 3 generated, 0 skipped, 0 with warnings, 0 errors (report: C:\Users\pxpac\Local Sites\nowp\app\public\pdf-generator/raport_generowania.csv)
+[2026-11-09 11:34:51] [web] [INFO] Generation started (mode: full, overwrite: yes)
+[2026-11-09 11:34:51] [web] [INFO] Generated Certyfikat_diagnozy_NPWZ-Jan_Kowalski.pdf
+[2026-11-09 11:34:51] [web] [INFO] Generated Certyfikat_diagnozy_NPWZ-Anna_Nowak-Zielinska.pdf
+[2026-11-09 11:34:51] [web] [INFO] Generated Certyfikat_diagnozy_NPWZ-Piotr_Wisniewski.pdf
+[2026-11-09 11:34:51] [web] [INFO] Generation finished: 3 generated, 0 skipped, 0 with warnings, 0 errors (report: C:\Users\pxpac\Local Sites\nowp\app\public\pdf-generator/raport_generowania.csv)
+[2026-11-09 11:36:36] [web] [INFO] Generation started (mode: preview, overwrite: yes)
+[2026-11-09 11:36:36] [web] [INFO] Generated Certyfikat_diagnozy_NPWZ-Jan_Kowalski.pdf
+[2026-11-09 11:36:41] [web] [INFO] Generation started (mode: preview, overwrite: yes)
+[2026-11-09 11:36:41] [web] [INFO] Generated Certyfikat_diagnozy_NPWZ-Jan_Kowalski.pdf
+[2026-11-09 11:36:41] [web] [INFO] Generated Certyfikat_diagnozy_NPWZ-Anna_Nowak-Zielinska.pdf
+[2026-11-09 11:36:41] [web] [INFO] Generated Certyfikat_diagnozy_NPWZ-Piotr_Wisniewski.pdf
+[2026-11-09 11:36:41] [web] [INFO] Generated _test_preview.pdf
+[2026-11-09 11:36:41] [web] [INFO] Generation finished: 4 generated, 0 skipped, 0 with warnings, 0 errors (report: C:\Users\pxpac\Local Sites\nowp\app\public\pdf-generator/raport_generowania.csv)
+[2026-11-09 11:36:42] [web] [INFO] Generation started (mode: preview, overwrite: yes)
+[2026-11-09 11:36:43] [web] [INFO] Generated Certyfikat_diagnozy_NPWZ-Jan_Kowalski.pdf
+[2026-11-09 11:36:43] [web] [INFO] Generated Certyfikat_diagnozy_NPWZ-Anna_Nowak-Zielinska.pdf
+[2026-11-09 11:36:43] [web] [INFO] Generated Certyfikat_diagnozy_NPWZ-Piotr_Wisniewski.pdf
+[2026-11-09 11:36:43] [web] [INFO] Generated _test_preview.pdf
+[2026-11-09 11:36:43] [web] [INFO] Generation finished: 4 generated, 0 skipped, 0 with warnings, 0 errors (report: C:\Users\pxpac\Local Sites\nowp\app\public\pdf-generator/raport_generowania.csv)
+[2026-11-09 11:37:25] [web] [INFO] Generation started (mode: preview, overwrite: yes)
+[2026-11-09 11:37:25] [web] [INFO] Generated Certyfikat_diagnozy_NPWZ-Jan_Kowalski.pdf
+[2026-11-09 11:37:25] [web] [INFO] Generated Certyfikat_diagnozy_NPWZ-Anna_Nowak-Zielinska.pdf
+[2026-11-09 11:37:25] [web] [INFO] Generated Certyfikat_diagnozy_NPWZ-Piotr_Wisniewski.pdf
+[2026-11-09 11:37:25] [web] [INFO] Generated _test_preview.pdf
+[2026-11-09 11:37:25] [web] [INFO] Generation finished: 4 generated, 0 skipped, 0 with warnings, 0 errors (report: C:\Users\pxpac\Local Sites\nowp\app\public\pdf-generator/raport_generowania.csv)
+[2026-11-09 11:37:34] [web] [INFO] Generation started (mode: preview, overwrite: yes)
+[2026-11-09 11:37:34] [web] [INFO] Generated Certyfikat_diagnozy_NPWZ-Jan_Kowalski.pdf
+[2026-11-09 11:37:34] [web] [INFO] Generated Certyfikat_diagnozy_NPWZ-Anna_Nowak-Zielinska.pdf
+[2026-11-09 11:37:34] [web] [INFO] Generated Certyfikat_diagnozy_NPWZ-Piotr_Wisniewski.pdf
+[2026-11-09 11:37:34] [web] [INFO] Generated _test_preview.pdf
+[2026-11-09 11:37:34] [web] [INFO] Generation finished: 4 generated, 0 skipped, 0 with warnings, 0 errors (report: C:\Users\pxpac\Local Sites\nowp\app\public\pdf-generator/raport_generowania.csv)
+[2026-11-09 11:37:38] [web] [INFO] Generation started (mode: preview, overwrite: yes)
+[2026-11-09 11:37:38] [web] [INFO] Generated Certyfikat_diagnozy_NPWZ-Jan_Kowalski.pdf
+[2026-11-09 11:37:38] [web] [INFO] Generated Certyfikat_diagnozy_NPWZ-Anna_Nowak-Zielinska.pdf
+[2026-11-09 11:37:38] [web] [INFO] Generated Certyfikat_diagnozy_NPWZ-Piotr_Wisniewski.pdf
+[2026-11-09 11:37:38] [web] [INFO] Generated _test_preview.pdf
+[2026-11-09 11:37:38] [web] [INFO] Generation finished: 4 generated, 0 skipped, 0 with warnings, 0 errors (report: C:\Users\pxpac\Local Sites\nowp\app\public\pdf-generator/raport_generowania.csv)
+[2026-11-09 11:48:21] [web] [INFO] Rendering test sheet (grid: yes, fields: yes)
+[2026-11-09 11:48:21] [web] [INFO] Test sheet saved to C:\Users\pxpac\Local Sites\nowp\app\public\pdf-generator/test.pdf
+[2026-11-09 11:48:21] [web] [INFO] Rendering test sheet (grid: no, fields: yes)
+[2026-11-09 11:48:21] [web] [INFO] Test sheet saved to C:\Users\pxpac\Local Sites\nowp\app\public\pdf-generator/test.pdf
+[2026-11-09 11:50:31] [web] [INFO] Rendering test sheet (grid: yes, fields: yes)
+[2026-11-09 11:50:31] [web] [INFO] Test sheet saved to C:\Users\pxpac\Local Sites\nowp\app\public\pdf-generator/test.pdf
+[2026-11-09 11:50:50] [web] [INFO] Rendering test sheet (grid: yes, fields: yes)
+[2026-11-09 11:50:50] [web] [INFO] Test sheet saved to C:\Users\pxpac\Local Sites\nowp\app\public\pdf-generator/test.pdf
+[2026-11-09 11:50:56] [web] [INFO] Rendering test sheet (grid: yes, fields: yes)
+[2026-11-09 11:50:56] [web] [INFO] Test sheet saved to C:\Users\pxpac\Local Sites\nowp\app\public\pdf-generator/test.pdf
+[2026-11-09 11:52:10] [web] [INFO] Rendering test sheet (grid: yes, fields: yes)
+[2026-11-09 11:52:16] [web] [INFO] Rendering test sheet (grid: yes, fields: yes)
+[2026-11-09 11:52:16] [web] [INFO] Test sheet saved to C:\Users\pxpac\Local Sites\nowp\app\public\pdf-generator/test.pdf
+[2026-11-09 11:52:46] [web] [INFO] Rendering test sheet (grid: yes, fields: yes)
+[2026-11-09 11:52:46] [web] [INFO] Test sheet saved to C:\Users\pxpac\Local Sites\nowp\app\public\pdf-generator/test.pdf
+[2026-11-09 11:53:15] [web] [INFO] Rendering test sheet (grid: yes, fields: yes)
+[2026-11-09 11:53:15] [web] [INFO] Test sheet saved to C:\Users\pxpac\Local Sites\nowp\app\public\pdf-generator/test.pdf
+[2026-11-09 11:53:42] [web] [INFO] Rendering test sheet (grid: yes, fields: yes)
+[2026-11-09 11:53:42] [web] [INFO] Test sheet saved to C:\Users\pxpac\Local Sites\nowp\app\public\pdf-generator/test.pdf
+[2026-11-09 11:54:35] [web] [INFO] Rendering test sheet (grid: yes, fields: yes)
+[2026-11-09 11:54:35] [web] [INFO] Test sheet saved to C:\Users\pxpac\Local Sites\nowp\app\public\pdf-generator/test.pdf
+[2026-11-09 11:55:02] [web] [INFO] Rendering test sheet (grid: yes, fields: yes)
+[2026-11-09 11:55:02] [web] [INFO] Test sheet saved to C:\Users\pxpac\Local Sites\nowp\app\public\pdf-generator/test.pdf

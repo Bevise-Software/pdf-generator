@@ -13,6 +13,7 @@ use PdfGenerator\Pdf\DocumentGenerator;
 use PdfGenerator\Pdf\FontManager;
 use PdfGenerator\Pdf\GridRenderer;
 use PdfGenerator\Pdf\PdfFactory;
+use PdfGenerator\Pdf\TestSheetRenderer;
 use PdfGenerator\Pdf\TextFitter;
 use PdfGenerator\Report\ReportWriter;
 use PdfGenerator\Support\FilenameResolver;
@@ -44,6 +45,66 @@ final class GenerationService
         $this->logger->info('Calibration grid saved to ' . $this->config->gridOutputPath);
 
         return $this->config->gridOutputPath;
+    }
+
+    /**
+     * Renders test.pdf: the template overlaid with the calibration grid
+     * and/or field boxes with sample values, according to the flags.
+     */
+    public function renderTestSheet(bool $withGrid, bool $withFields): string
+    {
+        $this->logger->info(sprintf(
+            'Rendering test sheet (grid: %s, fields: %s)',
+            $withGrid ? 'yes' : 'no',
+            $withFields ? 'yes' : 'no'
+        ));
+
+        try {
+            $sampleRecord = $this->sampleRecord();
+            $sampleValues = [];
+            foreach ($this->config->fields as $key => $field) {
+                $sampleValues[$key] = $field->resolveValue($sampleRecord);
+            }
+
+            $pdfFactory = new PdfFactory();
+            (new TestSheetRenderer(
+                $pdfFactory,
+                new FontManager($this->config->fontCacheDir),
+                new TextFitter(),
+                new GridRenderer($pdfFactory)
+            ))->render(
+                $this->config->templatePath,
+                $this->config->fields,
+                $sampleValues,
+                $withGrid,
+                $withFields,
+                $this->config->testOutputPath
+            );
+        } catch (Throwable $e) {
+            $this->logger->error('Test sheet rendering failed: ' . $e->getMessage());
+            throw $e;
+        }
+
+        $this->logger->info('Test sheet saved to ' . $this->config->testOutputPath);
+
+        return $this->config->testOutputPath;
+    }
+
+    /** Realistic sample values (with Polish diacritics) for the test sheet. */
+    private function sampleRecord(): array
+    {
+        $record = [
+            'imie'     => 'Aleksandra',
+            'nazwisko' => 'Wiśniewska-Kowalska',
+            'numer'    => '999999',
+        ];
+        foreach ($this->requiredColumns() as $column) {
+            if (!isset($record[$column])) {
+                $record[$column] = 'Przykładowa wartość ąćęłńóśźż';
+            }
+        }
+
+        return $record;
     }
 
     /**

@@ -75,7 +75,7 @@ try {
 
 // --- Action handling (POST only) --------------------------------------------
 $result = null;
-$gridPath = null;
+$testPath = null;
 $action = null;
 
 if ($config !== null && ($_SERVER['REQUEST_METHOD'] ?? '') === 'POST') {
@@ -87,11 +87,14 @@ if ($config !== null && ($_SERVER['REQUEST_METHOD'] ?? '') === 'POST') {
         try {
             $service = new GenerationService($config, new FileLogger($config->logPath, 'web'));
             switch ($action) {
-                case 'grid':
-                    $gridPath = $service->renderGrid();
-                    break;
-                case 'preview':
-                    $result = $service->generate(preview: true);
+                case 'test':
+                    $testGrid = isset($_POST['test_grid']);
+                    $testFields = isset($_POST['test_fields']);
+                    if (!$testGrid && !$testFields) {
+                        $fatalError = 'Zaznacz przynajmniej jedną opcję testu: siatka lub pola.';
+                        break;
+                    }
+                    $testPath = $service->renderTestSheet($testGrid, $testFields);
                     break;
                 case 'generate':
                     $result = $service->generate(preview: false, forceOverwrite: isset($_POST['overwrite']));
@@ -187,8 +190,8 @@ $logLines = $config !== null ? logTail($config->logPath) : [];
         <div class="alert error"><?= e($fatalError) ?></div>
     <?php endif; ?>
 
-    <?php if ($gridPath !== null): ?>
-        <div class="alert success">Siatka kalibracyjna zapisana: <?= e($gridPath) ?><br>Odczytaj z niej współrzędne x/y pól i wpisz je w config.php.</div>
+    <?php if ($testPath !== null): ?>
+        <div class="alert success">Plik testowy zapisany: <?= e($testPath) ?><br>Sprawdź pozycje pól i popraw x/y/width w config.php, potem wygeneruj test ponownie.</div>
     <?php endif; ?>
 
     <div class="card">
@@ -205,20 +208,27 @@ $logLines = $config !== null ? logTail($config->logPath) : [];
 
     <div class="card">
         <h2>Akcje</h2>
-        <form method="post" class="actions">
+        <form method="post">
             <input type="hidden" name="csrf_token" value="<?= e($csrfToken) ?>">
-            <button class="btn-secondary" type="submit" name="action" value="grid" <?= $templateOk ? '' : 'disabled' ?>>
-                Siatka kalibracyjna
-            </button>
-            <button class="btn-secondary" type="submit" name="action" value="preview" <?= $ready ? '' : 'disabled' ?>>
-                Podgląd (<?= GenerationService::PREVIEW_LIMIT ?> rekordy + test)
-            </button>
-            <button class="btn-primary" type="submit" name="action" value="generate" <?= $ready ? '' : 'disabled' ?>>
-                Generuj wszystkie PDF-y
-            </button>
-            <label class="overwrite">
-                <input type="checkbox" name="overwrite" value="1"> nadpisz istniejące pliki
-            </label>
+            <div class="actions" style="margin-bottom: 14px;">
+                <label class="overwrite">
+                    <input type="checkbox" name="test_grid" value="1" checked> siatka
+                </label>
+                <label class="overwrite">
+                    <input type="checkbox" name="test_fields" value="1" checked> pola
+                </label>
+                <button class="btn-secondary" type="submit" name="action" value="test" <?= $templateOk ? '' : 'disabled' ?>>
+                    Test &rarr; test.pdf
+                </button>
+            </div>
+            <div class="actions">
+                <button class="btn-primary" type="submit" name="action" value="generate" <?= $ready ? '' : 'disabled' ?>>
+                    Generuj wszystkie PDF-y
+                </button>
+                <label class="overwrite">
+                    <input type="checkbox" name="overwrite" value="1"> nadpisz istniejące pliki
+                </label>
+            </div>
         </form>
         <?php if (!$ready): ?>
             <p class="muted">Uzupełnij brakujące pliki (patrz „Stan projektu”), aby odblokować generowanie.</p>
@@ -227,7 +237,7 @@ $logLines = $config !== null ? logTail($config->logPath) : [];
 
     <?php if ($result !== null): ?>
         <div class="card">
-            <h2>Wynik<?= $action === 'preview' ? ' (podgląd)' : '' ?></h2>
+            <h2>Wynik</h2>
 
             <?php if ($result->validationErrors !== []): ?>
                 <div class="alert error">Walidacja nie powiodła się — nic nie wygenerowano. Popraw błędy i spróbuj ponownie.</div>

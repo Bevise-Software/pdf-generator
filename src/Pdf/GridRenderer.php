@@ -36,33 +36,36 @@ final class GridRenderer
             $size = $pdf->getTemplateSize($tpl);
             $pdf->AddPage($size['orientation'], [$size['width'], $size['height']]);
             $pdf->useTemplate($tpl, 0, 0, $size['width'], $size['height']);
-
-            $width = $size['width'];
-            $height = $size['height'];
-            $pdf->SetFont('helvetica', '', 5); // built-in font is enough for numeric labels
-            $pdf->SetTextColor(255, 0, 0);
-
-            // Vertical lines + X labels along the top edge
-            for ($x = 0; $x <= $width; $x += self::STEP) {
-                $this->setLineStyle($pdf, $x % self::MAJOR_STEP === 0);
-                $pdf->Line((float) $x, 0, (float) $x, $height);
-                $pdf->Text((float) $x + 0.4, 0.4, (string) $x);
-            }
-            // Horizontal lines + Y labels along the left edge
-            for ($y = 0; $y <= $height; $y += self::STEP) {
-                $this->setLineStyle($pdf, $y % self::MAJOR_STEP === 0);
-                $pdf->Line(0, (float) $y, $width, (float) $y);
-                $pdf->Text(0.4, (float) $y + 0.4, (string) $y);
-            }
-            // "x,y" pairs at every major intersection for easy mid-page reading
-            for ($x = self::MAJOR_STEP; $x < $width; $x += self::MAJOR_STEP) {
-                for ($y = self::MAJOR_STEP; $y < $height; $y += self::MAJOR_STEP) {
-                    $pdf->Text((float) $x + 0.6, (float) $y + 0.6, $x . ',' . $y);
-                }
-            }
+            $this->drawGrid($pdf, $size['width'], $size['height']);
         }
 
         $pdf->Output($outputPath, 'F');
+    }
+
+    /** Draws the labelled 10 mm calibration grid onto the current page. */
+    public function drawGrid(Fpdi $pdf, float $width, float $height): void
+    {
+        $pdf->SetFont('helvetica', '', 5); // built-in font is enough for numeric labels
+        $pdf->SetTextColor(255, 0, 0);
+
+        // Vertical lines + X labels along the top edge
+        for ($x = 0; $x <= $width; $x += self::STEP) {
+            $this->setLineStyle($pdf, $x % self::MAJOR_STEP === 0);
+            $pdf->Line((float) $x, 0, (float) $x, $height);
+            $pdf->Text((float) $x + 0.4, 0.4, (string) $x);
+        }
+        // Horizontal lines + Y labels along the left edge
+        for ($y = 0; $y <= $height; $y += self::STEP) {
+            $this->setLineStyle($pdf, $y % self::MAJOR_STEP === 0);
+            $pdf->Line(0, (float) $y, $width, (float) $y);
+            $pdf->Text(0.4, (float) $y + 0.4, (string) $y);
+        }
+        // "x,y" pairs at every major intersection for easy mid-page reading
+        for ($x = self::MAJOR_STEP; $x < $width; $x += self::MAJOR_STEP) {
+            for ($y = self::MAJOR_STEP; $y < $height; $y += self::MAJOR_STEP) {
+                $pdf->Text((float) $x + 0.6, (float) $y + 0.6, $x . ',' . $y);
+            }
+        }
     }
 
     private function setLineStyle(Fpdi $pdf, bool $major): void
