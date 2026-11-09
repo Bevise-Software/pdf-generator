@@ -73,16 +73,13 @@ try {
     $fatalError = 'Błąd konfiguracji: ' . $e->getMessage();
 }
 
-// --- Action handling (POST only) --------------------------------------------
-$result = null;
-$testPath = null;
-$action = null;
-
+// --- Action handling (POST only, Post/Redirect/Get) ---------------------------
 if ($config !== null && ($_SERVER['REQUEST_METHOD'] ?? '') === 'POST') {
+    $flash = ['error' => null, 'testPath' => null, 'result' => null];
     $action = (string) ($_POST['action'] ?? '');
 
     if (!hash_equals($csrfToken, (string) ($_POST['csrf_token'] ?? ''))) {
-        $fatalError = 'Nieprawidłowy token bezpieczeństwa. Odśwież stronę i spróbuj ponownie.';
+        $flash['error'] = 'Nieprawidłowy token bezpieczeństwa. Odśwież stronę i spróbuj ponownie.';
     } else {
         try {
             $service = new GenerationService($config, new FileLogger($config->logPath, 'web'));
@@ -91,22 +88,49 @@ if ($config !== null && ($_SERVER['REQUEST_METHOD'] ?? '') === 'POST') {
                     $testGrid = isset($_POST['test_grid']);
                     $testFields = isset($_POST['test_fields']);
                     if (!$testGrid && !$testFields) {
-                        $fatalError = 'Zaznacz przynajmniej jedną opcję testu: siatka lub pola.';
+                        $flash['error'] = 'Zaznacz przynajmniej jedną opcję testu: siatka lub pola.';
                         break;
                     }
-                    $testPath = $service->renderTestSheet($testGrid, $testFields);
+                    $flash['testPath'] = $service->renderTestSheet($testGrid, $testFields);
                     break;
                 case 'generate':
-                    $result = $service->generate(preview: false, forceOverwrite: isset($_POST['overwrite']));
+                    $generationResult = $service->generate(preview: false, forceOverwrite: isset($_POST['overwrite']));
+                    $flash['result'] = [
+                        'validationErrors' => $generationResult->validationErrors,
+                        'reportRows'       => $generationResult->reportRows,
+                        'stats'            => $generationResult->stats,
+                    ];
                     break;
                 default:
-                    $fatalError = 'Nieznana akcja.';
+                    $flash['error'] = 'Nieznana akcja.';
             }
         } catch (UnsupportedPdfException) {
-            $fatalError = UnsupportedPdfException::helpText();
+            $flash['error'] = UnsupportedPdfException::helpText();
         } catch (Throwable $e) {
-            $fatalError = $e->getMessage();
+            $flash['error'] = $e->getMessage();
         }
+    }
+
+    // Redirect to a plain GET so refreshing the page never re-submits the action
+    $_SESSION['flash'] = $flash;
+    header('Location: index.php', true, 303);
+    exit;
+}
+
+// --- One-time flash message from the previous action (cleared on read) --------
+$result = null;
+$testPath = null;
+
+if (isset($_SESSION['flash'])) {
+    $flash = $_SESSION['flash'];
+    unset($_SESSION['flash']);
+
+    $fatalError ??= $flash['error'] ?? null;
+    $testPath = $flash['testPath'] ?? null;
+    if (is_array($flash['result'] ?? null)) {
+        $result = ($flash['result']['validationErrors'] ?? []) !== []
+            ? GenerationResult::validationFailed($flash['result']['validationErrors'])
+            : GenerationResult::completed($flash['result']['reportRows'], $flash['result']['stats']);
     }
 }
 
@@ -184,14 +208,17 @@ $logLines = $config !== null ? logTail($config->logPath) : [];
 <body>
 <div class="wrap">
     <h1>Generator spersonalizowanych PDF</h1>
-    <p class="sub">Nakłada imię i nazwisko oraz numer na wzór PDF dla każdego odbiorcy z pliku CSV.</p>
 
     <?php if ($fatalError !== null): ?>
         <div class="alert error"><?= e($fatalError) ?></div>
     <?php endif; ?>
 
     <?php if ($testPath !== null): ?>
-        <div class="alert success">Plik testowy zapisany: <?= e($testPath) ?><br>Sprawdź pozycje pól i popraw x/y/width w config.php, potem wygeneruj test ponownie.</div>
+        <div class="alert success">
+            Plik testowy gotowy:
+            <a href="test.pdf?t=<?= e((string) @filemtime($testPath)) ?>" target="_blank"><b>otwórz test.pdf</b></a><br>
+            Sprawdź pozycje pól i popraw x/y/width w config.php, potem wygeneruj test ponownie.
+        </div>
     <?php endif; ?>
 
     <div class="card">

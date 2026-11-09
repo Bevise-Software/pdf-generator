@@ -60,7 +60,7 @@ return [
             'color'    => '#1A1A1A',
         ],
         'number' => [
-            'value'    => '{numer}',
+            'value'    => 'NPWZ: {numer}',
             'page'     => 1,
             'x'        => 0.0,
             'y'        => 84.0,
@@ -69,7 +69,7 @@ return [
             'font'     => __DIR__ . '/fonts/DejaVuSans.ttf',
             'size'     => 14.0,
             'min_size' => 8.0,
-            'color'    => '#FF0000',
+            'color'    => '#295b74',
         ],
     ],
 ];

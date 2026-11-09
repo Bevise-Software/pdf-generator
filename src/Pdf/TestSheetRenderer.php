@@ -59,7 +59,9 @@ final class TestSheetRenderer
             if ($withFields) {
                 foreach ($fields as $key => $field) {
                     if ($field->page === $page) {
-                        $this->drawField($pdf, $field, $sampleValues[$key] ?? '');
+                        // Blue guides (box + label) only in calibration mode (with grid);
+                        // fields-only mode shows the final look
+                        $this->drawField($pdf, $field, $sampleValues[$key] ?? '', $withGrid);
                     }
                 }
             }
@@ -68,21 +70,23 @@ final class TestSheetRenderer
         $pdf->Output($outputPath, 'F');
     }
 
-    private function drawField(Fpdi $pdf, FieldConfig $field, string $text): void
+    private function drawField(Fpdi $pdf, FieldConfig $field, string $text, bool $withGuides): void
     {
-        // Dashed outline of the text box (height = starting font size)
-        $boxHeight = $field->size * 25.4 / 72; // pt -> mm
-        $pdf->SetLineStyle(['width' => 0.3, 'dash' => '2,1.5', 'color' => self::BOX_COLOR]);
-        $pdf->Rect($field->x, $field->y, $field->width, $boxHeight);
+        if ($withGuides) {
+            // Dashed outline of the text box (height = starting font size)
+            $boxHeight = $field->size * 25.4 / 72; // pt -> mm
+            $pdf->SetLineStyle(['width' => 0.3, 'dash' => '2,1.5', 'color' => self::BOX_COLOR]);
+            $pdf->Rect($field->x, $field->y, $field->width, $boxHeight);
 
-        // Label with the field key and its config values, just above the box
-        $pdf->SetFont('helvetica', '', 6);
-        $pdf->SetTextColor(...self::BOX_COLOR);
-        $pdf->Text(
-            $field->x + 1,
-            max(0.0, $field->y - 3),
-            sprintf('%s  x=%s  y=%s  w=%s', $field->key, $field->x, $field->y, $field->width)
-        );
+            // Label with the field key and its config values, just above the box
+            $pdf->SetFont('helvetica', '', 6);
+            $pdf->SetTextColor(...self::BOX_COLOR);
+            $pdf->Text(
+                $field->x + 1,
+                max(0.0, $field->y - 3),
+                sprintf('%s  x=%s  y=%s  w=%s', $field->key, $field->x, $field->y, $field->width)
+            );
+        }
 
         // Sample value rendered exactly like in real generation
         if ($text === '') {
