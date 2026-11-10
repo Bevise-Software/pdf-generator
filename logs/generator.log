@@ -192,3 +192,6 @@
 [2026-11-10 11:45:51] [web] [INFO] Rendering test sheet (grid: no, fields: yes)
 [2026-11-10 11:45:51] [web] [INFO] Test sheet using first CSV record
 [2026-11-10 11:45:51] [web] [INFO] Test sheet saved to C:\Users\pxpac\Local Sites\nowp\app\public\pdf-generator/test.pdf
+[2026-11-10 12:06:31] [web] [INFO] Rendering test sheet (grid: no, fields: yes)
+[2026-11-10 12:06:31] [web] [INFO] Test sheet using first CSV record
+[2026-11-10 12:06:31] [web] [INFO] Test sheet saved to C:\Users\pxpac\Local Sites\nowp\app\public\pdf-generator/test.pdf

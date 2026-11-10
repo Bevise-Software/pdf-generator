@@ -25,7 +25,7 @@ function e(?string $value): string
     return htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8');
 }
 
-/** Returns the last $limit lines of the log file (newest last). */
+/** Returns the last $limit lines of the log file (newest first). */
 function logTail(string $path, int $limit = 25): array
 {
     if (!is_file($path)) {
@@ -33,7 +33,7 @@ function logTail(string $path, int $limit = 25): array
     }
     $lines = file($path, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) ?: [];
 
-    return array_slice($lines, -$limit);
+    return array_reverse(array_slice($lines, -$limit));
 }
 
 /** Maps an internal report status to a CSS badge class. */
