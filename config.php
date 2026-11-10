@@ -9,6 +9,13 @@ return [
     'csv'         => __DIR__ . '/odbiorcy.csv',
 
     /*
+     * Columns required in the CSV regardless of templates (e.g. kept for the
+     * mailing script). Columns referenced by {placeholders} in 'filename' and
+     * field 'value' templates are always required automatically.
+     */
+    'required_columns' => [],
+
+    /*
      * OUTPUT FILENAME template. {kolumna} placeholders use CSV values,
      * exactly like in field 'value' templates. Must end with .pdf.
      * Polish diacritics are transliterated (ń -> n) and unsafe characters
@@ -51,8 +58,8 @@ return [
             'value'    => '{imie} {nazwisko}',
             'page'     => 1,
             'x'        => 0.0,
-            'y'        => 70.0,
-            'width'    => 300.0,
+            'y'        => 65.0,
+            'width'    => 280.0,
             'align'    => 'center',
             'font'     => __DIR__ . '/fonts/DejaVuSans.ttf',
             'size'     => 26.0,
@@ -63,8 +70,8 @@ return [
             'value'    => 'NPWZ: {numer}',
             'page'     => 1,
             'x'        => 0.0,
-            'y'        => 84.0,
-            'width'    => 300.0,
+            'y'        => 78.0,
+            'width'    => 280.0,
             'align'    => 'center',
             'font'     => __DIR__ . '/fonts/DejaVuSans.ttf',
             'size'     => 14.0,

@@ -143,3 +143,30 @@
 [2026-11-09 12:05:15] [web] [INFO] Test sheet saved to C:\Users\pxpac\Local Sites\nowp\app\public\pdf-generator/test.pdf
 [2026-11-09 12:06:07] [web] [INFO] Rendering test sheet (grid: no, fields: yes)
 [2026-11-09 12:06:08] [web] [INFO] Test sheet saved to C:\Users\pxpac\Local Sites\nowp\app\public\pdf-generator/test.pdf
+[2026-11-09 12:44:07] [web] [INFO] Rendering test sheet (grid: yes, fields: yes)
+[2026-11-09 12:44:08] [web] [INFO] Test sheet saved to C:\Users\pxpac\Local Sites\nowp\app\public\pdf-generator/test.pdf
+[2026-11-09 12:44:09] [web] [INFO] Rendering test sheet (grid: no, fields: yes)
+[2026-11-09 12:44:09] [web] [INFO] Test sheet saved to C:\Users\pxpac\Local Sites\nowp\app\public\pdf-generator/test.pdf
+[2026-11-09 13:13:46] [web] [INFO] Rendering test sheet (grid: no, fields: yes)
+[2026-11-09 13:13:47] [web] [INFO] Test sheet saved to C:\Users\pxpac\Local Sites\nowp\app\public\pdf-generator/test.pdf
+[2026-11-09 13:14:13] [web] [INFO] Rendering test sheet (grid: yes, fields: yes)
+[2026-11-09 13:14:13] [web] [INFO] Test sheet saved to C:\Users\pxpac\Local Sites\nowp\app\public\pdf-generator/test.pdf
+[2026-11-09 13:15:06] [web] [INFO] Rendering test sheet (grid: no, fields: yes)
+[2026-11-09 13:15:06] [web] [INFO] Test sheet saved to C:\Users\pxpac\Local Sites\nowp\app\public\pdf-generator/test.pdf
+[2026-11-09 13:15:19] [web] [INFO] Rendering test sheet (grid: yes, fields: yes)
+[2026-11-09 13:15:19] [web] [INFO] Test sheet saved to C:\Users\pxpac\Local Sites\nowp\app\public\pdf-generator/test.pdf
+[2026-11-09 13:15:21] [web] [INFO] Rendering test sheet (grid: no, fields: yes)
+[2026-11-09 13:15:21] [web] [INFO] Test sheet saved to C:\Users\pxpac\Local Sites\nowp\app\public\pdf-generator/test.pdf
+[2026-11-09 13:15:30] [web] [INFO] Rendering test sheet (grid: yes, fields: yes)
+[2026-11-09 13:15:30] [web] [INFO] Test sheet saved to C:\Users\pxpac\Local Sites\nowp\app\public\pdf-generator/test.pdf
+[2026-11-09 13:15:36] [web] [INFO] Rendering test sheet (grid: no, fields: yes)
+[2026-11-09 13:15:36] [web] [INFO] Test sheet saved to C:\Users\pxpac\Local Sites\nowp\app\public\pdf-generator/test.pdf
+[2026-11-10 11:21:44] [cli] [INFO] Generation started (mode: preview, overwrite: yes)
+[2026-11-10 11:21:44] [cli] [INFO] Generated Certyfikat_diagnozy_NPWZ-Jan_Kowalski.pdf
+[2026-11-10 11:21:44] [cli] [INFO] Generated Certyfikat_diagnozy_NPWZ-Anna_Nowak-Zielinska.pdf
+[2026-11-10 11:21:44] [cli] [INFO] Generated Certyfikat_diagnozy_NPWZ-Piotr_Wisniewski.pdf
+[2026-11-10 11:21:44] [cli] [INFO] Generated _test_preview.pdf
+[2026-11-10 11:21:44] [cli] [INFO] Generation finished: 4 generated, 0 skipped, 0 with warnings, 0 errors (report: C:\Users\pxpac\Local Sites\nowp\app\public\pdf-generator/raport_generowania.csv)
+[2026-11-10 11:22:34] [cli] [INFO] Generation started (mode: preview, overwrite: yes)
+[2026-11-10 11:22:34] [cli] [WARNING] Validation: Missing required CSV columns: email
+[2026-11-10 11:22:34] [cli] [WARNING] Generation aborted: validation failed, nothing was generated

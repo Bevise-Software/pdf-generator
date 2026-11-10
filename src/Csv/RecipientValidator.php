@@ -6,9 +6,6 @@ namespace PdfGenerator\Csv;
 
 final class RecipientValidator
 {
-    /** Columns always required regardless of templates (needed by the mailer). */
-    public const BASE_COLUMNS = ['email'];
-
     /** Key under which the resolved output filename is stored in each record. */
     public const FILENAME_KEY = '_filename';
 

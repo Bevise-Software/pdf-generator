@@ -209,15 +209,15 @@ final class GenerationService
     }
 
     /**
-     * Required CSV columns = base columns (email) + every column referenced
-     * by field value templates and the filename template in config.php.
+     * Required CSV columns = 'required_columns' from config.php + every column
+     * referenced by field value templates and the filename template.
      *
      * @return string[]
      */
     private function requiredColumns(): array
     {
         $columns = array_merge(
-            RecipientValidator::BASE_COLUMNS,
+            $this->config->requiredColumns,
             (new FilenameResolver($this->config->filenameTemplate))->referencedColumns()
         );
         foreach ($this->config->fields as $field) {

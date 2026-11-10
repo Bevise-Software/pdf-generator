@@ -9,10 +9,14 @@ use InvalidArgumentException;
 /** Immutable application configuration, validated once at startup. */
 final class AppConfig
 {
-    /** @param array<string, FieldConfig> $fields */
+    /**
+     * @param string[] $requiredColumns
+     * @param array<string, FieldConfig> $fields
+     */
     public function __construct(
         public readonly string $templatePath,
         public readonly string $csvPath,
+        public readonly array $requiredColumns,
         public readonly string $filenameTemplate,
         public readonly string $outputDir,
         public readonly string $reportPath,
@@ -27,10 +31,13 @@ final class AppConfig
 
     public static function fromArray(array $raw): self
     {
-        foreach (['template', 'csv', 'filename', 'output_dir', 'report', 'grid_output', 'test_output', 'font_cache', 'log', 'fields'] as $required) {
+        foreach (['template', 'csv', 'required_columns', 'filename', 'output_dir', 'report', 'grid_output', 'test_output', 'font_cache', 'log', 'fields'] as $required) {
             if (!array_key_exists($required, $raw)) {
                 throw new InvalidArgumentException("Missing config key \"$required\".");
             }
+        }
+        if (!is_array($raw['required_columns'])) {
+            throw new InvalidArgumentException('Config key "required_columns" must be an array of column names.');
         }
 
         $fields = [];
@@ -41,6 +48,7 @@ final class AppConfig
         return new self(
             templatePath: (string) $raw['template'],
             csvPath: (string) $raw['csv'],
+            requiredColumns: array_values(array_map('strval', $raw['required_columns'])),
             filenameTemplate: (string) $raw['filename'],
             outputDir: rtrim((string) $raw['output_dir'], '/\\'),
             reportPath: (string) $raw['report'],
@@ -58,6 +66,7 @@ final class AppConfig
         return new self(
             $this->templatePath,
             $this->csvPath,
+            $this->requiredColumns,
             $this->filenameTemplate,
             $this->outputDir,
             $this->reportPath,
