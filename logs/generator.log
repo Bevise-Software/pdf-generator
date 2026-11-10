@@ -170,3 +170,25 @@
 [2026-11-10 11:22:34] [cli] [INFO] Generation started (mode: preview, overwrite: yes)
 [2026-11-10 11:22:34] [cli] [WARNING] Validation: Missing required CSV columns: email
 [2026-11-10 11:22:34] [cli] [WARNING] Generation aborted: validation failed, nothing was generated
+[2026-11-10 11:25:33] [web] [INFO] Rendering test sheet (grid: no, fields: yes)
+[2026-11-10 11:25:33] [web] [INFO] Test sheet saved to C:\Users\pxpac\Local Sites\nowp\app\public\pdf-generator/test.pdf
+[2026-11-10 11:25:51] [web] [INFO] Rendering test sheet (grid: no, fields: yes)
+[2026-11-10 11:25:52] [web] [INFO] Test sheet saved to C:\Users\pxpac\Local Sites\nowp\app\public\pdf-generator/test.pdf
+[2026-11-10 11:31:16] [cli] [INFO] Rendering test sheet (grid: no, fields: yes)
+[2026-11-10 11:31:16] [cli] [INFO] Test sheet using first CSV record
+[2026-11-10 11:31:16] [cli] [INFO] Test sheet saved to C:\Users\pxpac\Local Sites\nowp\app\public\pdf-generator/test.pdf
+[2026-11-10 11:31:16] [cli] [INFO] Rendering test sheet (grid: no, fields: yes)
+[2026-11-10 11:31:16] [cli] [INFO] Test sheet using built-in sample data (CSV missing or empty)
+[2026-11-10 11:31:16] [cli] [INFO] Test sheet saved to C:\Users\pxpac\Local Sites\nowp\app\public\pdf-generator/test.pdf
+[2026-11-10 11:32:04] [cli] [INFO] Rendering test sheet (grid: yes, fields: yes)
+[2026-11-10 11:32:04] [cli] [INFO] Test sheet using first CSV record
+[2026-11-10 11:32:04] [cli] [INFO] Test sheet saved to C:\Users\pxpac\Local Sites\nowp\app\public\pdf-generator/test.pdf
+[2026-11-10 11:33:41] [web] [INFO] Rendering test sheet (grid: no, fields: yes)
+[2026-11-10 11:33:41] [web] [INFO] Test sheet using first CSV record
+[2026-11-10 11:33:41] [web] [INFO] Test sheet saved to C:\Users\pxpac\Local Sites\nowp\app\public\pdf-generator/test.pdf
+[2026-11-10 11:35:46] [web] [INFO] Rendering test sheet (grid: no, fields: yes)
+[2026-11-10 11:35:46] [web] [INFO] Test sheet using first CSV record
+[2026-11-10 11:35:47] [web] [INFO] Test sheet saved to C:\Users\pxpac\Local Sites\nowp\app\public\pdf-generator/test.pdf
+[2026-11-10 11:45:51] [web] [INFO] Rendering test sheet (grid: no, fields: yes)
+[2026-11-10 11:45:51] [web] [INFO] Test sheet using first CSV record
+[2026-11-10 11:45:51] [web] [INFO] Test sheet saved to C:\Users\pxpac\Local Sites\nowp\app\public\pdf-generator/test.pdf

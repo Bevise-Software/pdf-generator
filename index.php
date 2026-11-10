@@ -149,7 +149,7 @@ if ($config !== null) {
     }
     if ($csvOk) {
         try {
-            [, $records] = (new RecipientReader())->read($config->csvPath);
+            [, $records] = (new RecipientReader($config->csvSeparator))->read($config->csvPath);
             $recordCount = count($records);
         } catch (Throwable) {
             $recordCount = null;

@@ -8,7 +8,9 @@ use RuntimeException;
 
 final class RecipientReader
 {
-    private const SEPARATOR = ';';
+    public function __construct(private readonly string $separator = ';')
+    {
+    }
 
     /**
      * Reads a UTF-8, semicolon-separated CSV. Strips the BOM from the first
@@ -27,7 +29,7 @@ final class RecipientReader
         }
 
         try {
-            $headers = fgetcsv($handle, 0, self::SEPARATOR, '"', '\\');
+            $headers = fgetcsv($handle, 0, $this->separator, '"', '\\');
             if ($headers === false) {
                 throw new RuntimeException("CSV file is empty: $path");
             }
@@ -36,7 +38,7 @@ final class RecipientReader
 
             $records = [];
             $rowNumber = 1;
-            while (($row = fgetcsv($handle, 0, self::SEPARATOR, '"', '\\')) !== false) {
+            while (($row = fgetcsv($handle, 0, $this->separator, '"', '\\')) !== false) {
                 $rowNumber++;
                 if ($row === [null] || (count($row) === 1 && trim((string) $row[0]) === '')) {
                     continue; // skip blank lines

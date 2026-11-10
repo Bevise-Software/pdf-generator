@@ -6,7 +6,10 @@
  */
 return [
     'template'    => __DIR__ . '/Certyfikat_diagnozy_npwz.pdf',
-    'csv'         => __DIR__ . '/odbiorcy.csv',
+    'csv'         => __DIR__ . '/certyfikaty-lista.csv',
+
+    // CSV column separator (e.g. ';' for Excel exports, ',' for plain CSV)
+    'csv_separator' => ',',
 
     /*
      * Columns required in the CSV regardless of templates (e.g. kept for the
@@ -23,7 +26,7 @@ return [
      * Every column referenced here becomes a required CSV column.
      * Examples: '{imie}_{nazwisko}_{numer}.pdf', 'certyfikat_{numer}.pdf', '{plik}'
      */
-    'filename'    => 'Certyfikat_diagnozy_NPWZ-{imie}_{nazwisko}.pdf',
+    'filename'    => 'Certyfikat_diagnozy_NPWZ-{IMIĘ}_{NAZWISKO}.pdf',
 
     'output_dir'  => __DIR__ . '/pdf',
     'report'      => __DIR__ . '/raport_generowania.csv',
@@ -55,10 +58,10 @@ return [
      */
     'fields' => [
         'full_name' => [
-            'value'    => '{imie} {nazwisko}',
+            'value'    => '{IMIĘ} {NAZWISKO}',
             'page'     => 1,
             'x'        => 0.0,
-            'y'        => 65.0,
+            'y'        => 64.0,
             'width'    => 280.0,
             'align'    => 'center',
             'font'     => __DIR__ . '/fonts/DejaVuSans.ttf',
@@ -67,10 +70,10 @@ return [
             'color'    => '#1A1A1A',
         ],
         'number' => [
-            'value'    => 'NPWZ: {numer}',
+            'value'    => 'NPWZ: {PWZ}',
             'page'     => 1,
             'x'        => 0.0,
-            'y'        => 78.0,
+            'y'        => 77.0,
             'width'    => 280.0,
             'align'    => 'center',
             'font'     => __DIR__ . '/fonts/DejaVuSans.ttf',

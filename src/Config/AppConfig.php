@@ -16,6 +16,7 @@ final class AppConfig
     public function __construct(
         public readonly string $templatePath,
         public readonly string $csvPath,
+        public readonly string $csvSeparator,
         public readonly array $requiredColumns,
         public readonly string $filenameTemplate,
         public readonly string $outputDir,
@@ -39,6 +40,10 @@ final class AppConfig
         if (!is_array($raw['required_columns'])) {
             throw new InvalidArgumentException('Config key "required_columns" must be an array of column names.');
         }
+        $separator = (string) ($raw['csv_separator'] ?? ';');
+        if (strlen($separator) !== 1) {
+            throw new InvalidArgumentException('Config key "csv_separator" must be a single character, e.g. \';\' or \',\'.');
+        }
 
         $fields = [];
         foreach ($raw['fields'] as $key => $fieldRaw) {
@@ -48,6 +53,7 @@ final class AppConfig
         return new self(
             templatePath: (string) $raw['template'],
             csvPath: (string) $raw['csv'],
+            csvSeparator: $separator,
             requiredColumns: array_values(array_map('strval', $raw['required_columns'])),
             filenameTemplate: (string) $raw['filename'],
             outputDir: rtrim((string) $raw['output_dir'], '/\\'),
@@ -66,6 +72,7 @@ final class AppConfig
         return new self(
             $this->templatePath,
             $this->csvPath,
+            $this->csvSeparator,
             $this->requiredColumns,
             $this->filenameTemplate,
             $this->outputDir,

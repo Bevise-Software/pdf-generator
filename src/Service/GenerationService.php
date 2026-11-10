@@ -90,9 +90,24 @@ final class GenerationService
         return $this->config->testOutputPath;
     }
 
-    /** Realistic sample values (with Polish diacritics) for the test sheet. */
+    /**
+     * Values for the test sheet: the first record from the CSV when available,
+     * otherwise built-in sample data (so calibration works without a CSV).
+     */
     private function sampleRecord(): array
     {
+        try {
+            [, $records] = (new RecipientReader($this->config->csvSeparator))->read($this->config->csvPath);
+            if ($records !== []) {
+                $this->logger->info('Test sheet using first CSV record');
+
+                return $records[0];
+            }
+        } catch (Throwable) {
+            // fall through to built-in sample data
+        }
+        $this->logger->info('Test sheet using built-in sample data (CSV missing or empty)');
+
         $record = [
             'imie'     => 'Aleksandra',
             'nazwisko' => 'Wiśniewska-Kowalska',
@@ -133,7 +148,7 @@ final class GenerationService
             // Probe the template once: unsupported compression and page-range errors surface here
             $generator->assertTemplateSupported();
 
-            [$headers, $records] = (new RecipientReader())->read($config->csvPath);
+            [$headers, $records] = (new RecipientReader($config->csvSeparator))->read($config->csvPath);
 
             // Resolve output filenames up front so the validator can check them
             $resolver = new FilenameResolver($config->filenameTemplate);
