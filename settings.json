@@ -1,17 +1,17 @@
 {
-    "filename": "vaoucher-{KOD}",
+    "filename": "vaoucher-prezentowy-{KOD}",
     "fields": {
         "number": {
             "value": "{KOD}",
             "page": 1,
-            "x": 0.0,
-            "y": 184.0,
-            "width": 210.0,
+            "x": 0,
+            "y": 184,
+            "width": 210,
             "align": "center",
             "font": "fonts/Montserrat-SemiBold.ttf",
-            "size": 23.0,
+            "size": 22,
             "transform": "uppercase",
-            "min_size": 8.0,
+            "min_size": 8,
             "color": "#ffffff"
         }
     }

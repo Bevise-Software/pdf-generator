@@ -913,3 +913,28 @@
 [2026-11-18 10:48:20] [web] [INFO] Generated vaoucher-583YZ9zq.pdf
 [2026-11-18 10:48:20] [web] [INFO] Generated vaoucher-lyDkKmtz.pdf
 [2026-11-18 10:48:20] [web] [INFO] Generation finished: 3 generated, 0 skipped, 0 with warnings, 0 errors (report: C:\Users\pxpac\Local Sites\nowp\app\public\pdf-generator/raport_generowania.csv)
+[2026-11-18 10:52:06] [web] [INFO] Generation started (mode: full, overwrite: no)
+[2026-11-18 10:52:06] [web] [INFO] Generated vaoucher-prezentowy-1Fs7ain5.pdf
+[2026-11-18 10:52:06] [web] [INFO] Generated vaoucher-prezentowy-583YZ9zq.pdf
+[2026-11-18 10:52:06] [web] [INFO] Generated vaoucher-prezentowy-lyDkKmtz.pdf
+[2026-11-18 10:52:06] [web] [INFO] Generation finished: 3 generated, 0 skipped, 0 with warnings, 0 errors (report: C:\Users\pxpac\Local Sites\nowp\app\public\pdf-generator/raport_generowania.csv)
+[2026-11-18 10:53:07] [web] [INFO] Generation started (mode: full, overwrite: no)
+[2026-11-18 10:53:07] [web] [INFO] Skipped vaoucher-prezentowy-1Fs7ain5.pdf: file already exists
+[2026-11-18 10:53:07] [web] [INFO] Skipped vaoucher-prezentowy-583YZ9zq.pdf: file already exists
+[2026-11-18 10:53:07] [web] [INFO] Skipped vaoucher-prezentowy-lyDkKmtz.pdf: file already exists
+[2026-11-18 10:53:07] [web] [INFO] Generation finished: 0 generated, 3 skipped, 0 with warnings, 0 errors (report: C:\Users\pxpac\Local Sites\nowp\app\public\pdf-generator/raport_generowania.csv)
+[2026-11-18 10:53:14] [web] [INFO] Generation started (mode: full, overwrite: yes)
+[2026-11-18 10:53:14] [web] [INFO] Generated vaoucher-prezentowy-1Fs7ain5.pdf
+[2026-11-18 10:53:14] [web] [INFO] Generated vaoucher-prezentowy-583YZ9zq.pdf
+[2026-11-18 10:53:14] [web] [INFO] Generated vaoucher-prezentowy-lyDkKmtz.pdf
+[2026-11-18 10:53:14] [web] [INFO] Generation finished: 3 generated, 0 skipped, 0 with warnings, 0 errors (report: C:\Users\pxpac\Local Sites\nowp\app\public\pdf-generator/raport_generowania.csv)
+[2026-11-18 10:54:53] [web] [INFO] Generation started (mode: full, overwrite: yes)
+[2026-11-18 10:54:53] [web] [INFO] Generated vaoucher-prezentowy-1Fs7ain5.pdf
+[2026-11-18 10:54:53] [web] [INFO] Generated vaoucher-prezentowy-583YZ9zq.pdf
+[2026-11-18 10:54:53] [web] [INFO] Generated vaoucher-prezentowy-xZG4pG7GQ.pdf
+[2026-11-18 10:54:53] [web] [INFO] Generation finished: 3 generated, 0 skipped, 0 with warnings, 0 errors (report: C:\Users\pxpac\Local Sites\nowp\app\public\pdf-generator/raport_generowania.csv)
+[2026-11-18 10:55:25] [web] [INFO] Generation started (mode: full, overwrite: yes)
+[2026-11-18 10:55:25] [web] [INFO] Generated vaoucher-prezentowy-1Fs7ain5.pdf
+[2026-11-18 10:55:25] [web] [INFO] Generated vaoucher-prezentowy-583YZ9zq.pdf
+[2026-11-18 10:55:25] [web] [INFO] Generated vaoucher-prezentowy-xZG4pG7G.pdf
+[2026-11-18 10:55:25] [web] [INFO] Generation finished: 3 generated, 0 skipped, 0 with warnings, 0 errors (report: C:\Users\pxpac\Local Sites\nowp\app\public\pdf-generator/raport_generowania.csv)
