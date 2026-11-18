@@ -13,11 +13,13 @@ session_start();
 require __DIR__ . '/vendor/autoload.php';
 
 use PdfGenerator\Config\AppConfig;
+use PdfGenerator\Config\SettingsStore;
 use PdfGenerator\Csv\RecipientReader;
 use PdfGenerator\Exception\UnsupportedPdfException;
 use PdfGenerator\Logging\FileLogger;
 use PdfGenerator\Service\GenerationResult;
 use PdfGenerator\Service\GenerationService;
+use PdfGenerator\Support\TextTemplate;
 
 /** HTML-escapes a value for safe output. */
 function e(?string $value): string
@@ -58,6 +60,41 @@ function statusLabel(string $status): string
     };
 }
 
+/** CSV header names, or null when the CSV is missing/unreadable. */
+function csvHeaders(AppConfig $config): ?array
+{
+    if (!is_file($config->csvPath)) {
+        return null;
+    }
+    try {
+        [$headers] = (new RecipientReader($config->csvSeparator))->read($config->csvPath);
+
+        return array_values(array_filter(array_map('strval', $headers), static fn(string $h) => $h !== ''));
+    } catch (Throwable) {
+        return null;
+    }
+}
+
+/** Returns an error message for an invalid filename template, or null when it is valid. */
+function filenameTemplateError(string $base, ?array $headers): ?string
+{
+    if ($base === '') {
+        return 'Nazwa pliku nie może być pusta.';
+    }
+    if ($headers !== null) {
+        $unknown = array_diff(TextTemplate::referencedColumns($base), $headers);
+        if ($unknown !== []) {
+            return sprintf(
+                'Nieznane zmienne w nazwie pliku: %s. Dostępne (wielkość liter ma znaczenie): %s.',
+                implode(', ', array_map(static fn(string $c) => '{' . $c . '}', array_unique($unknown))),
+                implode(', ', array_map(static fn(string $c) => '{' . $c . '}', $headers))
+            );
+        }
+    }
+
+    return null;
+}
+
 // --- CSRF token -------------------------------------------------------------
 if (empty($_SESSION['csrf_token'])) {
     $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
@@ -75,15 +112,35 @@ try {
 
 // --- Action handling (POST only, Post/Redirect/Get) ---------------------------
 if ($config !== null && ($_SERVER['REQUEST_METHOD'] ?? '') === 'POST') {
-    $flash = ['error' => null, 'testPath' => null, 'result' => null];
+    $flash = ['error' => null, 'testPath' => null, 'result' => null, 'saved' => false, 'filenameInput' => null];
     $action = (string) ($_POST['action'] ?? '');
 
     if (!hash_equals($csrfToken, (string) ($_POST['csrf_token'] ?? ''))) {
         $flash['error'] = 'Nieprawidłowy token bezpieczeństwa. Odśwież stronę i spróbuj ponownie.';
     } else {
         try {
+            // Every action saves the filename template typed in the form (if valid)
+            if (isset($_POST['filename'])) {
+                $filenameBase = AppConfig::filenameBase((string) $_POST['filename']);
+                $filenameError = filenameTemplateError($filenameBase, csvHeaders($config));
+                if ($filenameError !== null) {
+                    $flash['filenameInput'] = $filenameBase;
+                    throw new RuntimeException($filenameError);
+                }
+                if ($filenameBase !== $config->filenameTemplateBase()) {
+                    if ($config->settingsPath === null) {
+                        throw new RuntimeException('Brak klucza "settings" w config.php — nie można zapisać nazwy pliku.');
+                    }
+                    (new SettingsStore($config->settingsPath))->set('filename', $filenameBase);
+                    $config = $config->withFilenameTemplate($filenameBase);
+                }
+            }
+
             $service = new GenerationService($config, new FileLogger($config->logPath, 'web'));
             switch ($action) {
+                case 'save_filename':
+                    $flash['saved'] = true;
+                    break;
                 case 'test':
                     $testGrid = isset($_POST['test_grid']);
                     $testFields = isset($_POST['test_fields']);
@@ -120,6 +177,8 @@ if ($config !== null && ($_SERVER['REQUEST_METHOD'] ?? '') === 'POST') {
 // --- One-time flash message from the previous action (cleared on read) --------
 $result = null;
 $testPath = null;
+$filenameSaved = false;
+$filenameInput = null;
 
 if (isset($_SESSION['flash'])) {
     $flash = $_SESSION['flash'];
@@ -127,6 +186,8 @@ if (isset($_SESSION['flash'])) {
 
     $fatalError ??= $flash['error'] ?? null;
     $testPath = $flash['testPath'] ?? null;
+    $filenameSaved = (bool) ($flash['saved'] ?? false);
+    $filenameInput = $flash['filenameInput'] ?? null;
     if (is_array($flash['result'] ?? null)) {
         $result = ($flash['result']['validationErrors'] ?? []) !== []
             ? GenerationResult::validationFailed($flash['result']['validationErrors'])
@@ -159,6 +220,8 @@ if ($config !== null) {
 
 $ready = $templateOk && $csvOk && $fontsOk;
 $logLines = $config !== null ? logTail($config->logPath) : [];
+$csvColumns = $config !== null ? (csvHeaders($config) ?? []) : [];
+$filenameValue = $filenameInput ?? ($config !== null ? $config->filenameTemplateBase() : '');
 ?>
 <!DOCTYPE html>
 <html lang="pl">
@@ -203,6 +266,14 @@ $logLines = $config !== null ? logTail($config->logPath) : [];
     ul.errors { margin: 0; padding-left: 20px; color: var(--err); font-size: 14px; }
     pre.log { background: #0d1117; color: #c9d1d9; border-radius: 8px; padding: 14px 16px; font-size: 12px; line-height: 1.6; overflow-x: auto; margin: 0; max-height: 320px; overflow-y: auto; }
     .muted { color: #57606a; font-size: 13px; }
+    .filename { margin-bottom: 18px; }
+    .filename label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; }
+    .vars { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-bottom: 8px; font-size: 12px; color: #57606a; }
+    .var { background: #eef3fc; color: var(--accent); border: 1px solid #c8d8f3; border-radius: 6px; padding: 3px 8px; font: 12px ui-monospace, Consolas, monospace; cursor: pointer; }
+    .filename-row { display: flex; align-items: stretch; gap: 10px; }
+    .filename-input { display: flex; flex: 1; border: 1px solid #d0d7de; border-radius: 8px; overflow: hidden; background: #fff; }
+    .filename-input input { flex: 1; border: 0; padding: 9px 12px; font: 14px ui-monospace, Consolas, monospace; outline: none; min-width: 0; }
+    .filename-input .suffix { background: #f6f8fa; border-left: 1px solid #d0d7de; padding: 9px 12px; font: 14px ui-monospace, Consolas, monospace; color: #57606a; }
 </style>
 </head>
 <body>
@@ -213,11 +284,15 @@ $logLines = $config !== null ? logTail($config->logPath) : [];
         <div class="alert error"><?= e($fatalError) ?></div>
     <?php endif; ?>
 
+    <?php if ($filenameSaved): ?>
+        <div class="alert success">Zapisano nazwę pliku: <b><?= e($filenameValue) ?>.pdf</b></div>
+    <?php endif; ?>
+
     <?php if ($testPath !== null): ?>
         <div class="alert success">
             Plik testowy gotowy:
             <a href="test.pdf?t=<?= e((string) @filemtime($testPath)) ?>" target="_blank"><b>otwórz test.pdf</b></a><br>
-            Sprawdź pozycje pól i popraw x/y/width w config.php, potem wygeneruj test ponownie.
+            Sprawdź pozycje pól i popraw x/y/width w settings.json, potem wygeneruj test ponownie.
         </div>
     <?php endif; ?>
 
@@ -237,6 +312,26 @@ $logLines = $config !== null ? logTail($config->logPath) : [];
         <h2>Akcje</h2>
         <form method="post">
             <input type="hidden" name="csrf_token" value="<?= e($csrfToken) ?>">
+            <div class="filename">
+                <label for="filename">Nazwa generowanego pliku</label>
+                <div class="vars">
+                    <?php if ($csvColumns === []): ?>
+                        Brak dostępnych zmiennych (nie można odczytać nagłówków CSV).
+                    <?php else: ?>
+                        Dostępne zmienne:
+                        <?php foreach ($csvColumns as $column): ?>
+                            <button type="button" class="var" data-var="<?= e('{' . $column . '}') ?>"><?= e('{' . $column . '}') ?></button>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
+                </div>
+                <div class="filename-row">
+                    <div class="filename-input">
+                        <input type="text" id="filename" name="filename" value="<?= e($filenameValue) ?>" required spellcheck="false">
+                        <span class="suffix">.pdf</span>
+                    </div>
+                    <button class="btn-secondary" type="submit" name="action" value="save_filename">Zapisz</button>
+                </div>
+            </div>
             <div class="actions" style="margin-bottom: 14px;">
                 <label class="overwrite">
                     <input type="checkbox" name="test_grid" value="1" checked> siatka
@@ -304,5 +399,17 @@ $logLines = $config !== null ? logTail($config->logPath) : [];
         <?php endif; ?>
     </div>
 </div>
+<script>
+    // Clicking a variable inserts it at the cursor position in the filename input
+    document.querySelectorAll('.var').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            var input = document.getElementById('filename');
+            var start = input.selectionStart ?? input.value.length;
+            var end = input.selectionEnd ?? input.value.length;
+            input.setRangeText(btn.dataset.var, start, end, 'end');
+            input.focus();
+        });
+    });
+</script>
 </body>
 </html>

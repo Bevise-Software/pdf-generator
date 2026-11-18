@@ -244,7 +244,7 @@ final class GenerationService
 
     /**
      * Resolves every field's value template against a CSV record.
-     * Adding a field in config.php requires no changes here.
+     * Adding a field in settings.json requires no changes here.
      */
     private function mapFieldValues(array $record): array
     {

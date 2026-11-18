@@ -10,8 +10,8 @@ namespace PdfGenerator\Support;
  */
 final class TextTemplate
 {
-    // Column names may contain any letters (also Polish, e.g. {IMIĘ}), digits and _
-    private const PLACEHOLDER_PATTERN = '/\{([\p{L}\p{N}_]+)\}/u';
+    // Column names may contain any letters (also Polish, e.g. {IMIĘ}), digits, _ and - (e.g. {E-MAIL})
+    private const PLACEHOLDER_PATTERN = '/\{([\p{L}\p{N}_-]+)\}/u';
 
     /**
      * Resolves a template against a CSV record:

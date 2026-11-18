@@ -27,7 +27,7 @@ final class Application
             if (in_array('--grid', $argv, true)) {
                 $path = $service->renderGrid();
                 echo "Calibration grid saved to: $path\n";
-                echo "Read field x/y values from it and update config.php.\n";
+                echo "Read field x/y values from it and update settings.json.\n";
 
                 return 0;
             }

@@ -5,8 +5,8 @@
  * measured from the top-left corner of the page.
  */
 return [
-    'template'    => __DIR__ . '/Certyfikat_diagnozy_npwz.pdf',
-    'csv'         => __DIR__ . '/certyfikaty-lista.csv',
+    'template'    => __DIR__ . '/wzor.pdf',
+    'csv'         => __DIR__ . '/lista.csv',
 
     // CSV column separator (e.g. ';' for Excel exports, ',' for plain CSV)
     'csv_separator' => ',',
@@ -19,14 +19,18 @@ return [
     'required_columns' => [],
 
     /*
-     * OUTPUT FILENAME template. {kolumna} placeholders use CSV values,
-     * exactly like in field 'value' templates. Must end with .pdf.
+     * DEFAULT OUTPUT FILENAME template (without extension, .pdf is always
+     * appended). {kolumna} placeholders use CSV values, exactly like in field
+     * 'value' templates (case-sensitive, must match the CSV header).
      * Polish diacritics are transliterated (ń -> n) and unsafe characters
      * removed automatically, so names are always filesystem/e-mail safe.
      * Every column referenced here becomes a required CSV column.
-     * Examples: '{imie}_{nazwisko}_{numer}.pdf', 'certyfikat_{numer}.pdf', '{plik}'
+     * The template edited in the web UI is saved to 'settings' and
+     * overrides this default (also for generuj.php).
+     * Examples: '{imie}_{nazwisko}_{numer}', 'voucher-{KOD}'
      */
-    'filename'    => 'Certyfikat_diagnozy_NPWZ-{IMIĘ}_{NAZWISKO}.pdf',
+    'filename'    => 'Certyfikat_diagnozy_NPWZ-{IMIĘ}_{NAZWISKO}-{PWZ}',
+    'settings'    => __DIR__ . '/settings.json',
 
     'output_dir'  => __DIR__ . '/pdf',
     'report'      => __DIR__ . '/raport_generowania.csv',
@@ -39,47 +43,24 @@ return [
     'overwrite'   => false,
 
     /*
-     * FIELDS — every text stamped onto the template.
+     * FIELDS — every text stamped onto the template — are defined in
+     * settings.json under "fields" (one object per field). Adding a field
+     * there needs no code changes. A 'fields' array here is used only
+     * when settings.json has no "fields" key.
      *
-     * TO ADD A NEW FIELD: add one entry below. Nothing else needs changing.
-     *
-     *   'value'    - text template; {kolumna} is replaced with the CSV column
-     *                value, e.g. '{imie} {nazwisko}', '{numer}', 'Nr: {numer}'.
+     *   "value"    - text template; {kolumna} is replaced with the CSV column
+     *                value, e.g. "{imie} {nazwisko}", "Nr: {numer}".
      *                Every column referenced here automatically becomes a
      *                required CSV column (validated before generation).
-     *   'page'     - template page the text is stamped on
-     *   'x', 'y'   - top-left corner of the text box in mm (calibrate with --grid)
-     *   'width'    - text box width in mm (auto font shrinking fits text into it)
-     *   'align'    - left / center / right
-     *   'font'     - path to a TTF file (UTF-8 / Polish characters supported)
-     *   'size'     - starting font size in pt
-     *   'min_size' - minimum font size in pt (below this a warning is reported)
-     *   'color'    - '#RRGGBB' or [R, G, B]
+     *   "page"     - template page the text is stamped on
+     *   "x", "y"   - top-left corner of the text box in mm (calibrate with --grid)
+     *   "width"    - text box width in mm (auto font shrinking fits text into it)
+     *   "align"    - left / center / right
+     *   "font"     - TTF file path, relative to settings.json (or absolute)
+     *   "size"     - starting font size in pt
+     *   "min_size" - minimum font size in pt (below this a warning is reported)
+     *   "color"    - "#RRGGBB" or [R, G, B]
+     *   "transform"- optional: none (default) / uppercase / lowercase,
+     *                applied to the stamped text only (not filenames)
      */
-    'fields' => [
-        'full_name' => [
-            'value'    => '{IMIĘ} {NAZWISKO}',
-            'page'     => 1,
-            'x'        => 0.0,
-            'y'        => 64.0,
-            'width'    => 280.0,
-            'align'    => 'center',
-            'font'     => __DIR__ . '/fonts/DejaVuSans.ttf',
-            'size'     => 26.0,
-            'min_size' => 14.0,
-            'color'    => '#1A1A1A',
-        ],
-        'number' => [
-            'value'    => 'NPWZ: {PWZ}',
-            'page'     => 1,
-            'x'        => 0.0,
-            'y'        => 77.0,
-            'width'    => 280.0,
-            'align'    => 'center',
-            'font'     => __DIR__ . '/fonts/DejaVuSans.ttf',
-            'size'     => 14.0,
-            'min_size' => 8.0,
-            'color'    => '#295b74',
-        ],
-    ],
 ];

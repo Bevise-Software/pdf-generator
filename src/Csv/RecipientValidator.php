@@ -47,7 +47,7 @@ final class RecipientValidator
             $filename = (string) ($record[self::FILENAME_KEY] ?? '');
             if ($filename === '' || preg_replace('/\.pdf$/i', '', $filename) === '') {
                 $errors[] = "Row $row: output filename resolves to an empty name "
-                          . "(check the 'filename' template in config.php).";
+                          . "(check the filename template in settings.json / web UI).";
                 continue;
             }
             if (!preg_match(self::FILENAME_PATTERN, $filename)) {
@@ -55,7 +55,7 @@ final class RecipientValidator
                           . '(allowed: A-Z a-z 0-9 . _ -).';
             } elseif (!preg_match('/\.pdf$/i', $filename)) {
                 $errors[] = "Row $row: filename \"$filename\" must end with .pdf "
-                          . "(check the 'filename' template in config.php).";
+                          . "(check the filename template in settings.json / web UI).";
             }
 
             // Case-insensitive duplicate check (Windows filesystems)

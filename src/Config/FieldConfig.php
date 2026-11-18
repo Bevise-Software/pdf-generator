@@ -25,8 +25,14 @@ final class FieldConfig
         public readonly float $size,
         public readonly float $minSize,
         public readonly array $color,
+        public readonly string $transform = self::TRANSFORM_NONE,
     ) {
     }
+
+    public const TRANSFORM_NONE = 'none';
+    public const TRANSFORM_UPPERCASE = 'uppercase';
+    public const TRANSFORM_LOWERCASE = 'lowercase';
+    private const TRANSFORMS = [self::TRANSFORM_NONE, self::TRANSFORM_UPPERCASE, self::TRANSFORM_LOWERCASE];
 
     public static function fromArray(string $key, array $raw): self
     {
@@ -37,6 +43,15 @@ final class FieldConfig
         }
         if ((float) $raw['min_size'] > (float) $raw['size']) {
             throw new InvalidArgumentException("Field \"$key\": min_size must not exceed size.");
+        }
+        $transform = strtolower(trim((string) ($raw['transform'] ?? self::TRANSFORM_NONE)));
+        if (!in_array($transform, self::TRANSFORMS, true)) {
+            throw new InvalidArgumentException(sprintf(
+                'Field "%s": unknown transform "%s" (allowed: %s).',
+                $key,
+                $transform,
+                implode(', ', self::TRANSFORMS)
+            ));
         }
 
         return new self(
@@ -51,16 +66,23 @@ final class FieldConfig
             size: (float) $raw['size'],
             minSize: (float) $raw['min_size'],
             color: Color::parse($raw['color']),
+            transform: $transform,
         );
     }
 
     /**
-     * Resolves the value template against a CSV record:
+     * Resolves the value template against a CSV record and applies the transform:
      * '{imie} {nazwisko}' + ['imie' => 'Jan', 'nazwisko' => 'Kowalski'] => 'Jan Kowalski'.
      */
     public function resolveValue(array $record): string
     {
-        return TextTemplate::resolve($this->value, $record);
+        $text = TextTemplate::resolve($this->value, $record);
+
+        return match ($this->transform) {
+            self::TRANSFORM_UPPERCASE => mb_strtoupper($text, 'UTF-8'),
+            self::TRANSFORM_LOWERCASE => mb_strtolower($text, 'UTF-8'),
+            default => $text,
+        };
     }
 
     /** @return string[] CSV column names referenced by the value template */
